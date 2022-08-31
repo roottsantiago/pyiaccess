@@ -39,7 +39,7 @@ class SFTPClient(object):
 
     def list_files(self):
         sftp = self.ssh_client.open_sftp()
-        sftp.chdir(self.SFTP_REMOTE_PATH_BASE)
+        sftp.chdir(self.SFTP_REMOTE_PATH)
         filenames = []
         for filename in sftp.listdir_attr():
             filenames.append("{}".format(filename))
@@ -47,14 +47,14 @@ class SFTPClient(object):
 
         return filenames
 
-    def upload(self, filename):
-        local_file_path = filename
+    def upload(self, path_file):
+        local_file_path = path_file
         remote_path = "{}{}".format(
-            self.SFTP_REMOTE_PATH_BASE, ntpath.basename(filename)
+            self.SFTP_REMOTE_PATH, ntpath.basename(path_file)
         )
-
         ftp_client = self.ssh_client.open_sftp()
         ftp_client.put(local_file_path, remote_path)
         ftp_client.close()
+
         msg = "TRANSFERRED: {}".format(remote_path)
         logging.info(msg)
