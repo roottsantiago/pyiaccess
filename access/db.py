@@ -48,7 +48,7 @@ class ConnexionClient(object):
         return data
 
     @generic_error
-    def execute(self, query, action="select"):
+    def execute(self, query, params=[]):
         """
         Prepares and executes SQL.
 
@@ -56,11 +56,8 @@ class ConnexionClient(object):
         as specified by the DB API, or as individual values.
         """
         cursor = self._cnn.cursor()
-        data = cursor.execute(query)
-
-        if action in ("insert", "update"):
-            cursor.commit()
-            cursor.close()
+        data = cursor.execute(query) if not params else cursor.execute(query, params)
+        cursor.commit()
         return data
 
     @generic_error
