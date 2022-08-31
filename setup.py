@@ -17,7 +17,7 @@ setuptools.setup(
         "Programming Language :: Python",
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
-        "Operating System :: OS Debian-based Linux",
+        "Topic :: System :: Operating System Kernels :: Linux"
     ],
     python_requires='>=3.4',
     install_requires=[
