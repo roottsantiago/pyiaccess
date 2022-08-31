@@ -20,14 +20,13 @@ setuptools.setup(
         "Operating System :: OS Debian-based Linux",
     ],
     python_requires='>=3.4',
-    keywords=['IBM i Access', 'iseries', 'systems i', 'AS/400 iSeries'],
+    install_requires=[
+        'dotenv',
+        'pyodbc',
+        'paramiko'
+    ],
+    keywords=['IBM i Access', 'iSeries', 'systems i', 'AS/400'],
     project_urls={
         'Homepage': 'https://github.com/thomgonzalez/py-systems-i',
-    },
-    entry_points={
-        'console_scripts': [
-            'git-tagup=git_tagup.__main__:main',
-            'gtu=git_tagup.__main__:main',
-        ],
     },
 )
