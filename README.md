@@ -1,2 +1,2 @@
-# sysi-access
-Library for connecting to the IBM i Access Client system.
+# Systems i Access (Sysi)
+It is a client library for access to IBM System i systems with ODBC and SSH.
