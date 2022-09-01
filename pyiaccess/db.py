@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import pyodbc
-from access.helpers.common import generic_error
+from pyiaccess.helpers.common import generic_error
 
 
 class ConnexionClient(object):
