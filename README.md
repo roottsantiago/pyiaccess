@@ -31,7 +31,21 @@ Install pyiaccess.
 pip install pyiaccess
 ```
 
-# Setting environment variables
+# Usage
+Create a .env file in the root of your project
+
+```
+ISERIE_DSN = LIBRARY
+ISERIE_HOST = HOST
+ISERIE_USER = USER
+ISERIE_PASSWORD = PASSWORD
+
+SFTP_PORT = 22
+SFTP_REMOTE_PATH = "/home/repo/"
+```
+
+Configuration of environment variables of the project or application
+
 ```python
 import os
 from pyiaccess.manage import set_env
