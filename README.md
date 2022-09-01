@@ -30,3 +30,17 @@ Install pyiaccess.
 ```python
 pip install pyiaccess
 ```
+
+# Setting environment variables
+```python
+from pyiaccess.manage import set_env
+
+# Define .env file with absolute path.
+path_env = '/home/proyect/.back.env'
+
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+path_env = os.path.join(BASE_DIR, ".back.envv")
+
+# Load the environment variables.
+set_env(path_env)
+```
