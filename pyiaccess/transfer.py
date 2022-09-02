@@ -7,25 +7,31 @@ logging.basicConfig(level=logging.INFO)
 
 
 class SFTPClient(object):
-    SFTP_HOST = os.getenv("ISERIE_HOST")
-    SFTP_USER_NAME = os.getenv("ISERIE_USER")
-    SFTP_PASSWORD = os.getenv("ISERIE_PASSWORD")
-    SFTP_PORT = os.getenv("SFTP_PORT")
-    SFTP_REMOTE_PATH = os.getenv("SFTP_REMOTE_PATH")
+    """
+    Class for SSH client
+    """
 
     def __init__(self):
         self.ssh_client = paramiko.SSHClient()
+        self.ssh_client.load_host_keys(
+            os.path.expanduser(os.path.join("~", ".ssh", "known_hosts"))
+        )
         self.ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+        self.ISERIE_HOST = os.getenv("ISERIE_HOST")
+        self.ISERIE_USER = os.getenv("ISERIE_USER")
+        self.ISERIE_PASSWORD = os.getenv("ISERIE_PASSWORD")
+        self.SFTP_PORT = os.getenv("SFTP_PORT")
+        self.SFTP_REMOTE_PATH = os.getenv("SFTP_REMOTE_PATH")
 
     def connect(self):
         try:
             self.ssh_client.connect(
-                self.SFTP_HOST,
-                username=self.SFTP_USER_NAME,
-                password=self.SFTP_PASSWORD,
+                hostname=self.ISERIE_HOST,
+                username=self.ISERIE_USER,
+                password=self.ISERIE_PASSWORD,
                 port=self.SFTP_PORT,
             )
-            msg = "{}: {}".format(self.SFTP_HOST, "CONNECTED")
+            msg = "{}: {}".format(self.ISERIE_HOST, "CONNECTED")
             logging.info(msg)
         except paramiko.AuthenticationException as exc:
             print("Authentication Failed")
@@ -49,9 +55,7 @@ class SFTPClient(object):
 
     def upload(self, path_file):
         local_file_path = path_file
-        remote_path = "{}{}".format(
-            self.SFTP_REMOTE_PATH, ntpath.basename(path_file)
-        )
+        remote_path = "{}{}".format(self.SFTP_REMOTE_PATH, ntpath.basename(path_file))
         ftp_client = self.ssh_client.open_sftp()
         ftp_client.put(local_file_path, remote_path)
         ftp_client.close()
