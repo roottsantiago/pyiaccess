@@ -7,7 +7,7 @@ def generic_error(fn):
         try:
             return fn(*args, **kwargs)
         except Exception as e:
-            error = "Connection error: {}".format_map(e)
+            error = f"Connection error: {e}"
             raise error
 
     return func_wrapper
