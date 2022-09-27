@@ -4,22 +4,30 @@ import pyodbc
 from pyiaccess.helpers.common import generic_error
 
 
-class ConnexionClient(object):
+class IBMClient(object):
     """
     Base class for database connection.
     """
 
     _DRIVER = "IBM i Access ODBC Driver"
 
-    def __init__(self):
-        conn = "SYSTEM={};db2:DSN={};UID={};PWD={};DRIVER={};".format(
-            os.getenv("ISERIE_HOST"),
-            os.getenv("ISERIE_DSN"),
-            os.getenv("ISERIE_USER"),
-            os.getenv("ISERIE_PASSWORD"),
-            self._DRIVER,
+    def __init__(self, **kwargs):
+        self._IBMI_HOST = kwargs.get("hostname", None)
+        self._IBMI_DSN = kwargs.get("dsn", None)
+        self._IBMI_USER = kwargs.get("username", None)
+        self._IBMI_PASSWORD = kwargs.get("password", None)
+        self._IBMI_PORT = kwargs.get("port", None)
+
+        self.conn_str = (
+            f"SYSTEM={self._IBMI_HOST};db2:DSN={self._IBMI_DSN};UID={self._IBMI_USER};"
         )
-        self._cnn = pyodbc.connect(conn)
+        if self._IBMI_PORT:
+            port = f"PORT={self._IBMI_PORT};"
+            self.conn_str += port
+        self.conn_str += f"PWD={self._IBMI_PASSWORD};DRIVER={self._DRIVER};"
+
+    def connect(self):
+        self._cnn = pyodbc.connect(self.conn_str)
         self._cnn.autocommit = True
 
     def close(self):
@@ -77,7 +85,7 @@ class ConnexionClient(object):
         return True
 
     @generic_error
-    def call(self, usp_name, resultset):
+    def call(self, usp_name, resultset=False):
         cursor = self._cnn.cursor()
         cursor.execute(usp_name)
 
