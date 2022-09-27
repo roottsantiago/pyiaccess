@@ -1,15 +1,17 @@
-# Systems i Access client for python
-It is a client library for access to IBM System i with ODBC and SSH.
+# Systems i Access Client for python
+It is a library for access ODBC and SSH from Linux to IBM i (AS400) for python.
+To connect to IBM i we will need to download a ".deb" file, this library can be downloaded from the IBM page oficial. 
+
+IBM ODBC driver (login required) https://www.ibm.com/support/pages/ibm-i-access-client-solutions.
 
 Features
-[x] Support for Python 3.
+[x] Support for Python 3.6
 
-# Installation of dependencies
+Installation of dependencies
+----------------------------
 Before installing pyodbc you must install the packages from Debian/Ubuntu systems.
 
-1.1  INSTALLING ON DEBIAN-BASED LINUX DISTRIBUTIONS.
-
-Install python and odbc modules
+Install python and odbc modules:
 
 ```
   sudo apt update
@@ -17,52 +19,73 @@ Install python and odbc modules
   sudo apt install build-essential
 ```
 
-Install unixodbc
-
+Install unixodbc:
 ```
 sudo apt install unixodbc-dev unixodbc
 ```
 
-To connect to IBM iSeries systems we will need to download a .deb file, this library can be downloaded from the IBM page https://www.ibm.com/support/pages/ibm-i-access-client-solutions. So let's create an account, log in, and download the IBM i Access for Linux package.
-
 Copy the downloaded iseries odbc driver to the server and install:
 ```
-  sudo apt install ./ibm-iaccess-1.1.0.15-1.0.ppc64el.deb
+  sudo apt install ./ibm-iaccess-1.1.0.14-1.0.amd64.deb
 ```
 
 Installation
 ------------
 
-Install pyiaccess.
+Install pyiaccess:
 ```python
-pip install pyiaccess
+pip install PyiAccess
 ```
 
-# Usage
-Create a .env file in the root of your project
+Environment Variables
+-------
+Create a ".env" file at the root of your project to define the environment variables.
 
 ```
 IBMI_DSN = YOUR DATABASE
 IBMI_HOST = YOUR IP
 IBMI_USER = YOUR USER
 IBMI_PASSWORD = YOUR PASSWORD
-IBMI_PORT = YOUR PORT # Define or not is required
+IBMI_PORT = YOUR PORT # It is not required
 
 SFTP_HOST = YOUR IP
 SFTP_USER = YOUR USER
 SFTP_PASSWORD = YOUR PASSWORD
 SFTP_PORT = 22 # Default 22 or change port
-SFTP_REMOTE_PATH = "/home/"
+SFTP_REMOTE_PATH = "/home/" # Define server path to upload files
 ```
 
-Configuration of environment variables of the project or application
+Configuration of environment variables of the project or application.
 
 ```python
-from pyiaccess.manage import set_env
-
+from pyiaccess.engine import set_env
 # Define .env file with absolute or complete path.
 path_env = '/home/user/proyect/.env'
-
 # Load the environment variables.
 set_env(path_env)
+```
+
+Engine Configuration
+--------------------
+Creating an engine for data base.
+
+```python
+from pyiaccess.engine import create_db
+engine = create_db(
+    hostname=hostname, dsn=dsn, username=username, password=password, port=port
+)
+engine.connect()
+```
+
+Creating an engine for sftp.
+```python
+from pyiaccess.engine import create_sftp
+engine = create_sftp(
+    hostname=hostname,
+    username=username,
+    password=password,
+    port=port,
+    remote_path=remote_path,
+)
+engine.connect()
 ```
