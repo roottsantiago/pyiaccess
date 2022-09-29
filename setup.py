@@ -5,8 +5,8 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="PyiAccess",
-    version="0.1.1b1",
-    author="Tomás Gonzalez",
+    version="0.2",
+    author="Tomás Santiago González",
     author_email="thom.sgonzalez@gmail.com",
     description="It is a library that connects to IBM Power Systems (IBM i), with pyodbc and SSH connection.",
     long_description=long_description,
